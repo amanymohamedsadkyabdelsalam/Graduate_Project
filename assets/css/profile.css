@@ -1,0 +1,323 @@
+/* css/profile.css */
+:root {
+  --bg-color: #f0f0f0;
+  --text-color: #333;
+  --secondary-color: #666;
+  --primary-color-start: #b14cff;
+  --primary-color-end: #ff5da2;
+  --card-bg: #fff;
+  --border-color: #ddd;
+}
+
+body.dark-mode {
+  --bg-color: #121212;
+  --text-color: #ddd;
+  --secondary-color: #aaa;
+  --card-bg: #1e1e1e;
+  --border-color: #333;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-card {
+  width: 90%;
+  max-width: 800px;
+  margin: 20px auto;
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  padding-bottom: 20px;
+  transition: background 0.3s, box-shadow 0.3s;
+  padding: 30px;
+  position: relative;
+}
+
+.cover {
+  width: 100%;
+  height: 150px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color-start),
+    var(--primary-color-end)
+  );
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-top: -60px;
+  border: 4px solid var(--card-bg);
+  object-fit: cover;
+  margin-left: 20px;
+}
+
+#darkModeToggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color-start),
+    var(--primary-color-end)
+  );
+  color: #fff;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  padding: 10px 15px;
+}
+#darkModeToggle:hover {
+  opacity: 0.8;
+}
+
+.profile-actions {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+#edit {
+  width: 700px;
+  max-width: 100%;
+  height: 50px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color-start),
+    var(--primary-color-end)
+  );
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+#edit:hover {
+  opacity: 0.85;
+}
+
+#share {
+  width: 150px;
+  height: 50px;
+  background-color: #aaa;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+#share:hover {
+  opacity: 0.85;
+}
+
+#nav {
+  margin-top: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  list-style: none;
+  flex-wrap: wrap;
+}
+
+#nav a {
+  cursor: pointer;
+  padding-bottom: 10px;
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: color 0.3s, border-bottom 0.3s;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color-start),
+    var(--primary-color-end)
+  );
+}
+
+#nav a.active {
+  color: var(--primary-color-start);
+  border-bottom: 3px solid var(--primary-color-start);
+}
+
+#profilePosts {
+  width: 80%;
+  margin: 25px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.post-card-profile {
+  background: var(--card-bg);
+  padding: 15px;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.post-card-profile:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.post-card-profile img {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 12px;
+}
+
+.post-text {
+  font-size: 15px;
+  color: var(--text-color);
+}
+
+.media-grid {
+  width: 80%;
+  margin: 25px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.media-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}
+.media-img:hover {
+  transform: scale(1.05);
+}
+
+.empty {
+  text-align: center;
+  color: var(--secondary-color);
+  font-size: 16px;
+  margin-top: 40px;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+  color: var(--secondary-color);
+  transition: color 0.3s;
+}
+.like-btn.liked {
+  color: red;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+  background-color: var(--card-bg);
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  color: var(--text-color);
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0 15px 0;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+}
+
+.modal-content button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color-start),
+    var(--primary-color-end)
+  );
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+.modal-content button:hover {
+  opacity: 0.85;
+}
+
+.close {
+  color: var(--secondary-color);
+  float: right;
+  font-size: 28px;
+  cursor: pointer;
+}
+.close:hover {
+  color: red;
+}
+
+@media (max-width: 1024px) {
+  #nav ul {
+    gap: 30px;
+  }
+  #edit {
+    width: 500px;
+  }
+}
+
+@media (max-width: 768px) {
+  #profilePosts,
+  .media-grid {
+    width: 90%;
+  }
+  .media-img {
+    height: 180px;
+  }
+  #edit {
+    width: 100%;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  #nav ul {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .media-grid {
+    grid-template-columns: 1fr;
+  }
+  .media-img {
+    height: 150px;
+  }
+  #edit {
+    width: 100%;
+    height: 40px;
+  }
+}

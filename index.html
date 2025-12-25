@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="SocialVibe - Connect, like, and comment with your friends on posts."
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <title>Social Vibe</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-img"><i class="fa-regular fa-comment"></i></div>
+        <div class="logo-name"><h2>SocialVibe</h2></div>
+      </div>
+      <nav class="navigation">
+        <ul>
+          <li>
+            <a href="index.html"><i class="fa-solid fa-house-user"></i> Home</a>
+          </li>
+          <li>
+            <a href="login.html"
+              ><i class="fa-solid fa-right-to-bracket"></i> Log In</a
+            >
+          </li>
+          <li>
+            <a href="sign.html" class="signUp"
+              ><i class="fa-solid fa-user-plus"></i> Sign UP</a
+            >
+          </li>
+        </ul>
+      </nav>
+      <button id="darkModeToggle" class="dark-mode-btn"><i class="fa-solid fa-moon"></i></button>
+    </header>
+
+    <main>
+      <div class="create-post-box" id="createPostBox">
+        <div class="create-post-header">
+          <img id="userAvatar" src="assets/images/error.jpeg" alt="User" class="user-avatar" onerror="this.src='assets/images/error.jpeg'">
+          <input type="text" placeholder="What's on your mind?" id="quickPostInput" readonly onclick="openCreatePostForm()">
+        </div>
+        <div class="create-post-actions">
+          <button onclick="openCreatePostForm()">
+            <i class="fa-solid fa-image"></i> Photo/Video
+          </button>
+          <button onclick="openCreatePostForm()">
+            <i class="fa-solid fa-smile"></i> Feeling/Activity
+          </button>
+        </div>
+      </div>
+
+      <div class="create-post-form" id="createPostForm" style="display: none;">
+        <div class="form-header">
+          <h3>Create Post</h3>
+          <span class="close-form" onclick="closeCreatePostForm()">&times;</span>
+        </div>
+        <div class="form-body">
+          <div class="user-info">
+            <img id="formUserAvatar" src="assets/images/error.jpeg" alt="User" class="user-avatar">
+            <span id="formUsername">User</span>
+          </div>
+          <textarea id="postContent" placeholder="What's on your mind?"></textarea>
+          <div class="image-preview" id="imagePreview" style="display: none;">
+            <img id="previewImage" src="" alt="Preview">
+            <button class="remove-image" onclick="removeImage()">&times;</button>
+          </div>
+          <div class="add-to-post">
+            <span>Add to your post:</span>
+            <label for="postImageInput" class="add-photo-btn">
+              <i class="fa-solid fa-image"></i>
+            </label>
+            <input type="file" id="postImageInput" accept="image/*" style="display: none;" onchange="previewPostImage()">
+          </div>
+          <button class="post-button" onclick="createPost()">Post</button>
+        </div>
+      </div>
+
+      <div id="loader">Loading posts...</div>
+      <div class="post" id="posts"></div>
+      <button id="loadMoreBtn" style="display: none">Load More</button>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>

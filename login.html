@@ -1,0 +1,91 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="assets/css/style2.css">
+    <title>Social Vibe</title>
+  </head>
+  <body>
+   
+    <header>
+      <div class="logo">
+        <div class="logo-img">
+          <i class="fa-regular fa-comment"></i>
+        </div>
+        <div class="logo-name">
+          <h2>SocialVibe</h2>
+        </div>
+      </div>
+
+      <nav class="navigation">
+        <ul>
+          <li>
+            <a href="index.html"><i class="fa-solid fa-house-user"></i> Home</a>
+          </li>
+          <li></li>
+          <li>
+            <a href="login.html"
+              ><i class="fa-solid fa-right-to-bracket"></i> Log In</a
+            >
+          </li>
+          <li>
+            <a href="sign.html"
+              ><i class="fa-regular fa-comment-dots"></i> Sign UP</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+        <div class="purple-circle"></div>
+        <div class="pink-circle"></div>
+
+       <div class="half1">
+        <div class="logo">
+          <div class="logo-img">
+            <i class="fa-regular fa-comment"></i>
+          </div>
+          <div class="logo-name">
+            <h2 class="logo-h2">SocialVibe</h2>
+          </div>
+        </div>
+        <div>
+        <h1 class="en">Connect with the world</h1>
+        </div>
+        <div>
+        <p class="log-p">
+          Share your moments and stories with friends and family
+        </p>
+        </div>
+      </div>
+
+      <div class="half2">
+        <h2 class="log-h2">Welcome back!</h2>
+        <p class="log-p">Login to continue</p>
+        <label for="username" class="log-p">Username</label>
+        <div class="input-box">
+          <input type="text" id="username" placeholder="Demo-user" />
+          <span class="icon">@</span>
+        </div>
+        <label for="password" class="log-p">password</label>
+        <div class="input-box">
+          <input type="password" id="password" placeholder="••••••••" />
+          <span class="icon"><i class="fa-solid fa-lock"></i></span>
+        </div>
+        <button id="login">Login</button>
+        <p class="log-p">
+          Don't have an account? <a href="sign.html" class="signup-link">Sign up now</a>
+        </p>
+      </div>
+    </main>
+    <script src="assets/js/script-login.js"></script>
+  </body>
+</html>

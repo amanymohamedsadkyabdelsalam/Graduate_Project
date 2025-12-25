@@ -1,0 +1,57 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <link rel="stylesheet" href="assets/css/profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+<div class="profile-card">
+  <div class="cover"></div>
+
+  <div class="profile-info">
+    <img id="profileImage" class="avatar">
+    <button id="darkModeToggle">🌓</button>
+    <h2 id="username"></h2>
+    <p id="name"></p>
+    <p id="joined"></p>
+    <p><span id="postsCount">0</span> Posts</p>
+    <div class="profile-actions">
+      <button id="edit">Edit Profile</button>
+      <button id="share">Share Profile</button>
+    </div>
+  </div>
+</div>
+
+<div id="nav">
+  <ul>
+    <li><a class="pos active"><h4>Posts</h4></a></li>
+    <li><a class="med"><h4>Media</h4></a></li>
+    <li><a class="lin"><h4>Likes</h4></a></li>
+  </ul>
+</div>
+
+<div id="profilePosts"></div>
+
+<!-- Edit Profile Modal -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Edit Profile</h2>
+    <label>Username:</label>
+    <input type="text" id="editUsername">
+    <label>Name:</label>
+    <input type="text" id="editName">
+    <label>Profile Image URL:</label>
+    <input type="text" id="editImage">
+    <button id="saveProfile">Save Changes</button>
+  </div>
+</div>
+
+
+<script src="assets/js/profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!-- sign.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="assets/css/style2.css">
+    <title>Social Vibe</title>
+  </head>
+  <body>
+   
+    <header>
+      <div class="logo">
+        <div class="logo-img">
+          <i class="fa-regular fa-comment"></i>
+        </div>
+        <div class="logo-name">
+          <h2>SocialVibe</h2>
+        </div>
+      </div>
+
+      <nav class="navigation">
+        <ul>
+          <li>
+            <a href="index.html"><i class="fa-solid fa-house-user"></i> Home</a>
+          </li>
+          <li></li>
+          <li>
+            <a href="login.html"
+              ><i class="fa-solid fa-right-to-bracket"></i> Log In</a
+            >
+          </li>
+          <li>
+            <a href="sign.html"
+              ><i class="fa-regular fa-comment-dots"></i> Sign UP</a
+            >
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <div class="half1">
+        <div class="logo">
+          <div class="logo-img">
+            <i class="fa-regular fa-comment"></i>
+          </div>
+          <div class="pink-circle-sign"></div>
+          <div class="logo-name">
+            <h2 class="logo-h2">SocialVibe</h2>
+          </div>
+        </div>
+        <h1 class="en">Connect with the world</h1>
+        <div class="purple-circle-sign"></div>
+        <p class="log-p">
+          Share your moments and stories with friends and family
+        </p>
+      </div>
+
+      <div class="half2">
+        <h2 class="sign-h2">Create new account</h2>
+        <p class="log-p">Fill in the details to get started</p>
+        <label for="full-name" class="log-p">Full Name</label>
+        <div class="input-box">
+          <input
+            type="text"
+            id="full-name"
+            placeholder="Enter your full name"
+            required
+          />
+          <span class="icon"><i class="fa-regular fa-user"></i></span>
+        </div>
+        <label for="username" class="log-p">Username</label>
+        <div class="input-box">
+          <input
+            type="text"
+            id="username"
+            placeholder="Choose a username"
+            required
+          />
+          <span class="icon">@</span>
+        </div>
+        <label for="email" class="mail">Email</label>
+        <div class="input-box">
+          <input
+            type="email"
+            id="email"
+            placeholder="example@email.com"
+            required
+          />
+          <span class="icon"><i class="fa-regular fa-envelope"></i></span>
+        </div>
+        <label for="password" class="log-p">Password</label>
+        <div class="input-box">
+          <input
+            type="password"
+            id="password"
+            placeholder="••••••••"
+            required
+          />
+          <div id="stregth-bar">
+            <div id="strength-fill"></div>
+          </div>
+          <span class="icon"><i class="fa-solid fa-lock"></i></span>
+        </div>
+        <label for="profile-Image" class="imag"
+          >Profile Image (Optional)
+        </label>
+        <div class="input-box">
+          <input type="file" id="profile-Image"
+          placeholder="https://example.com/image.jpg" accept="image/* /">
+          <span class="icon"><i class="fa-solid fa-image"></i></span>
+        </div>
+        <button id="signUp">Create Account</button>
+        <p class="log-p">
+          Already have an account? <a href="login.html"class="signup-link">Login</a>
+        </p>
+      </div>
+    </main>
+    <script src="assets/js/script-register.js"></script>
+  </body>
+</html>
