@@ -1,55 +1,500 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Profile</title>
-  <link rel="stylesheet" href="assets/css/profile.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile - Social Media</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="assets/css/profile.css" />
+    <link rel="icon" href="assets/images/WhatsApp Image 2025-12-31 at 20.09.12.jpeg" type="image/jpeg">
 </head>
 <body>
+    <header>
+        <div class="logo">
+            <div class="logo-img"><i class="fa-regular fa-comment"></i></div>
+            <div class="logo-name"><h2>SocialVibe</h2></div>
+        </div>
+        
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Search posts, people, tags...">
+            <button class="search-button"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        
+        <nav class="navigation">
+            <ul>
+                <li><a href="index.html"><i class="fa-solid fa-house-user"></i> Home</a></li>
+                <li><a href="#" id="profileLink"><i class="fa-solid fa-user"></i> Profile</a></li>
+                <li><a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+            <button id="darkModeToggle" class="dark-mode-toggle">
+                <i class="fa-solid fa-moon"></i>
+            </button>
+        </nav>
+    </header>
 
-<div class="profile-card">
-  <div class="cover"></div>
+    <main class="main-content">
+        <div class="profile-container">
+            <div class="profile-header">
+                <button class="back-button" onclick="goBack()">
+                    <i class="fas fa-arrow-left"></i> Back
+                </button>
 
-  <div class="profile-info">
-    <img id="profileImage" class="avatar">
-    <button id="darkModeToggle">🌓</button>
-    <h2 id="username"></h2>
-    <p id="name"></p>
-    <p id="joined"></p>
-    <p><span id="postsCount">0</span> Posts</p>
-    <div class="profile-actions">
-      <button id="edit">Edit Profile</button>
-      <button id="share">Share Profile</button>
-    </div>
-  </div>
-</div>
+                <div class="profile-info">
+                    <div class="profile-image-container">
+                        <img id="profileImage" src="assets/images/error.jpeg" alt="Profile" class="profile-image"
+                            onerror="this.src='assets/images/error.jpeg'">
+                    </div>
+                    <div class="profile-details">
+                        <h1 id="profileName" class="profile-name">Loading...</h1>
+                        <p id="profileUsername" class="profile-username">@username</p>
+                        <p id="profileBio" class="profile-bio">No bio available</p>
 
-<div id="nav">
-  <ul>
-    <li><a class="pos active"><h4>Posts</h4></a></li>
-    <li><a class="med"><h4>Media</h4></a></li>
-    <li><a class="lin"><h4>Likes</h4></a></li>
-  </ul>
-</div>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span id="profilePostsCount" class="stat-number">0</span>
+                                <span class="stat-label">Posts</span>
+                            </div>
+                            <div class="stat-item">
+                                <span id="profileCommentsCount" class="stat-number">0</span>
+                                <span class="stat-label">Comments</span>
+                            </div>
+                            <div class="stat-item">
+                                <span id="profileFollowing" class="stat-number">0</span>
+                                <span class="stat-label">Following</span>
+                            </div>
+                            <div class="stat-item">
+                                <span id="profileFollowers" class="stat-number">0</span>
+                                <span class="stat-label">Followers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-<div id="profilePosts"></div>
+                <div class="profile-actions" id="profileActions"></div>
+            </div>
 
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>Edit Profile</h2>
-    <label>Username:</label>
-    <input type="text" id="editUsername">
-    <label>Name:</label>
-    <input type="text" id="editName">
-    <label>Profile Image URL:</label>
-    <input type="text" id="editImage">
-    <button id="saveProfile">Save Changes</button>
-  </div>
-</div>
+            <div class="profile-tabs">
+                <button class="tab-button active" onclick="switchTab('posts')">Posts</button>
+                <button class="tab-button" onclick="switchTab('about')">About</button>
+                <button class="tab-button" onclick="switchTab('photos')">Photos</button>
+            </div>
 
+            <div class="tab-content active" id="postsTab">
+                <div id="userPostsContainer">
+                    <div class="no-content">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading posts...</p>
+                    </div>
+                </div>
+            </div>
 
-<script src="assets/js/profile.js"></script>
+            <div class="tab-content" id="aboutTab">
+                <div class="edit-profile-form">
+                    <div class="form-group">
+                        <label for="profileEmail"><i class="fas fa-envelope"></i> Email</label>
+                        <input type="email" id="profileEmail" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="profileLocation"><i class="fas fa-location-dot"></i> Location</label>
+                        <input type="text" id="profileLocation" placeholder="Not specified" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="profileWebsite"><i class="fas fa-link"></i> Website</label>
+                        <input type="text" id="profileWebsite" placeholder="Not specified" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label for="profileJoined"><i class="fas fa-calendar"></i> Joined</label>
+                        <input type="text" id="profileJoined" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="photosTab">
+                <div id="photosGrid" class="posts-grid">
+                    <div class="no-content">
+                        <i class="fas fa-images"></i>
+                        <p>No photos yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="toast" class="toast"></div>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          
+            const darkModeToggle = document.getElementById("darkModeToggle");
+            if (localStorage.getItem("darkMode") === "enabled") {
+                document.body.classList.add("dark-mode");
+            }
+            
+            darkModeToggle.onclick = () => {
+                document.body.classList.toggle("dark-mode");
+                localStorage.setItem(
+                    "darkMode",
+                    document.body.classList.contains("dark-mode") ? "enabled" : "disabled"
+                );
+            };
+
+           
+            loadUserProfile();
+            setupNavigation();
+        });
+
+        function goBack() {
+            localStorage.removeItem("viewingUserId");
+            window.history.back();
+        }
+
+        function switchTab(tabName) {
+         
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+           
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+            
+            
+            if (tabName === 'photos') {
+                loadUserPhotos();
+            }
+        }
+
+        async function loadUserProfile() {
+            const viewingUserId = localStorage.getItem("viewingUserId");
+            const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+            
+
+            const userIdToShow = viewingUserId || currentUser.id;
+            
+            if (!userIdToShow) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                
+                const userResponse = await fetch(`https://tarmeezacademy.com/api/v1/users/${userIdToShow}`);
+                const userData = await userResponse.json();
+                
+                if (userData.data) {
+                    const user = userData.data;
+                    displayUserInfo(user);
+                    
+                    
+                    loadUserPosts(userIdToShow);
+                    
+                   
+                    setupProfileActions(userIdToShow, currentUser.id);
+                }
+            } catch (error) {
+                console.error("Error loading profile:", error);
+                showToast("Failed to load profile");
+            }
+        }
+
+        function displayUserInfo(user) {
+            document.getElementById("profileName").textContent = user.name || "User";
+            document.getElementById("profileUsername").textContent = `@${user.username}`;
+            document.getElementById("profileImage").src = user.profile_image || "assets/images/error.jpeg";
+            document.getElementById("profileBio").textContent = user.bio || "No bio available";
+            document.getElementById("profileEmail").value = user.email || "Not specified";
+            document.getElementById("profilePostsCount").textContent = user.posts_count || 0;
+            document.getElementById("profileCommentsCount").textContent = user.comments_count || 0;
+            document.getElementById("profileFollowing").textContent = user.following_count || 0;
+            document.getElementById("profileFollowers").textContent = user.followers_count || 0;
+            
+         
+            if (user.created_at) {
+                const joinedDate = new Date(user.created_at);
+                document.getElementById("profileJoined").value = joinedDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+        }
+
+        async function loadUserPosts(userId) {
+            try {
+                const postsResponse = await fetch(`https://tarmeezacademy.com/api/v1/users/${userId}/posts`);
+                const postsData = await postsResponse.json();
+                
+                const postsContainer = document.getElementById("userPostsContainer");
+                
+                if (postsData.data && postsData.data.length > 0) {
+                    let postsHTML = '<div class="posts-grid">';
+                    
+                    postsData.data.forEach(post => {
+                        postsHTML += `
+                            <div class="profile-post-card" onclick="viewPost(${post.id})">
+                                ${post.image ? `
+                                    <img src="${post.image}" alt="Post image" class="profile-post-image"
+                                         onerror="this.src='assets/images/error.jpeg'">
+                                ` : ''}
+                                <div class="profile-post-content">
+                                    ${post.title ? `<h3 class="profile-post-title">${post.title}</h3>` : ''}
+                                    <div class="profile-post-body">${post.body}</div>
+                                </div>
+                                <div class="profile-post-stats">
+                                    <span><i class="fas fa-heart"></i> ${post.likes_count || 0}</span>
+                                    <span><i class="fas fa-comment"></i> ${post.comments_count || 0}</span>
+                                    <span><i class="fas fa-calendar"></i> ${new Date(post.created_at).toLocaleDateString()}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    postsHTML += '</div>';
+                    postsContainer.innerHTML = postsHTML;
+                } else {
+                    postsContainer.innerHTML = `
+                        <div class="no-content">
+                            <i class="fas fa-newspaper"></i>
+                            <p>No posts yet</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error loading posts:", error);
+                document.getElementById("userPostsContainer").innerHTML = `
+                    <div class="no-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load posts</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadUserPhotos() {
+            try {
+                const viewingUserId = localStorage.getItem("viewingUserId");
+                const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+                const userIdToShow = viewingUserId || currentUser.id;
+                
+                const postsResponse = await fetch(`https://tarmeezacademy.com/api/v1/users/${userIdToShow}/posts`);
+                const postsData = await postsResponse.json();
+                
+                const photosContainer = document.getElementById("photosGrid");
+                
+                if (postsData.data && postsData.data.length > 0) {
+                    const postsWithImages = postsData.data.filter(post => post.image);
+                    
+                    if (postsWithImages.length > 0) {
+                        let photosHTML = '';
+                        
+                        postsWithImages.forEach(post => {
+                            photosHTML += `
+                                <div class="profile-post-card" onclick="viewPost(${post.id})">
+                                    <img src="${post.image}" alt="Post image" class="profile-post-image"
+                                         onerror="this.src='assets/images/error.jpeg'">
+                                    <div class="profile-post-stats">
+                                        <span><i class="fas fa-heart"></i> ${post.likes_count || 0}</span>
+                                        <span><i class="fas fa-comment"></i> ${post.comments_count || 0}</span>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        photosContainer.innerHTML = photosHTML;
+                    } else {
+                        photosContainer.innerHTML = `
+                            <div class="no-content">
+                                <i class="fas fa-images"></i>
+                                <p>No photos yet</p>
+                            </div>
+                        `;
+                    }
+                } else {
+                    photosContainer.innerHTML = `
+                        <div class="no-content">
+                            <i class="fas fa-images"></i>
+                            <p>No photos yet</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error("Error loading photos:", error);
+                document.getElementById("photosGrid").innerHTML = `
+                    <div class="no-content">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load photos</p>
+                    </div>
+                `;
+            }
+        }
+
+        function setupProfileActions(profileUserId, currentUserId) {
+            const actionsContainer = document.getElementById("profileActions");
+            
+            if (profileUserId == currentUserId) {
+                
+                actionsContainer.innerHTML = `
+                    <button class="action-button" onclick="editProfile()">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                `;
+            } else {
+              
+                actionsContainer.innerHTML = `
+                    <button class="action-button" onclick="followUser(${profileUserId})" id="followBtn">
+                        <i class="fas fa-user-plus"></i> Follow
+                    </button>
+                    <button class="action-button" onclick="sendMessage(${profileUserId})">
+                        <i class="fas fa-envelope"></i> Message
+                    </button>
+                `;
+                
+                
+                checkFollowingStatus(profileUserId);
+            }
+        }
+
+        async function checkFollowingStatus(userId) {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+            
+            try {
+                const response = await fetch(`https://tarmeezacademy.com/api/v1/users/${userId}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+                
+                const data = await response.json();
+                if (data.data && data.data.is_following) {
+                    const followBtn = document.getElementById("followBtn");
+                    followBtn.innerHTML = '<i class="fas fa-user-check"></i> Following';
+                    followBtn.style.background = "var(--primary-color)";
+                    followBtn.style.color = "white";
+                }
+            } catch (error) {
+                console.error("Error checking follow status:", error);
+            }
+        }
+
+        function viewPost(postId) {
+         
+            localStorage.setItem("viewingPostId", postId);
+            window.location.href = `post.html?id=${postId}`;
+        }
+
+        async function followUser(userId) {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                showToast("Please login to follow users");
+                window.location.href = "login.html";
+                return;
+            }
+            
+            try {
+                const followBtn = document.getElementById("followBtn");
+                const isFollowing = followBtn.innerHTML.includes('Following');
+                
+                const method = isFollowing ? "DELETE" : "POST";
+                const response = await fetch(`https://tarmeezacademy.com/api/v1/users/${userId}/follow`, {
+                    method: method,
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    if (isFollowing) {
+                        followBtn.innerHTML = '<i class="fas fa-user-plus"></i> Follow';
+                        followBtn.style.background = "";
+                        followBtn.style.color = "var(--primary-color)";
+                        showToast("Unfollowed user");
+                    } else {
+                        followBtn.innerHTML = '<i class="fas fa-user-check"></i> Following';
+                        followBtn.style.background = "var(--primary-color)";
+                        followBtn.style.color = "white";
+                        showToast("User followed successfully");
+                    }
+                }
+            } catch (error) {
+                console.error("Error following user:", error);
+                showToast("Failed to follow user");
+            }
+        }
+
+        function editProfile() {
+            showToast("Edit profile feature coming soon!");
+        }
+
+        function sendMessage(userId) {
+            showToast("Messaging feature coming soon!");
+        }
+
+        function setupNavigation() {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+            const nav = document.querySelector(".navigation ul");
+            
+            if (currentUser) {
+                nav.innerHTML = `
+                    <li><a href="index.html"><i class="fa-solid fa-house-user"></i> Home</a></li>
+                    <li><a href="#" onclick="openMyProfile()"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                `;
+            } else {
+                nav.innerHTML = `
+                    <li><a href="index.html"><i class="fa-solid fa-house-user"></i> Home</a></li>
+                    <li><a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Log In</a></li>
+                    <li><a href="sign.html" class="signUp"><i class="fa-solid fa-user-plus"></i> Sign UP</a></li>
+                `;
+            }
+        }
+
+        function openMyProfile() {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null");
+            if (currentUser && currentUser.id) {
+                localStorage.removeItem("viewingUserId");
+                window.location.href = "profile.html";
+            } else {
+                window.location.href = "login.html";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            localStorage.removeItem("currentUser");
+            localStorage.removeItem("viewingUserId");
+            showToast("Logged out successfully");
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1000);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.classList.add("show");
+            
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+        
+        function openUserProfile(userId) {
+            localStorage.setItem("viewingUserId", userId);
+            window.location.href = "profile.html";
+        }
+
+        window.openUserProfile = openUserProfile;
+        window.openMyProfile = openMyProfile;
+    </script>
 </body>
 </html>

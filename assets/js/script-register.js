@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-
   const signupForm = document.getElementById("signupForm");
   const signupBtn = document.getElementById("signUp");
   const signupText = document.getElementById("signup-text");
@@ -257,13 +256,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
       
       if (response.ok) {
-
         localStorage.setItem("token", data.token);
         localStorage.setItem("currentUser", JSON.stringify(data.user));
         
         showModal("Success!", true, `Welcome to SocialVibe, ${data.user.name}! Your account has been created successfully.`);
         
-            setTimeout(() => {
+        setTimeout(() => {
           window.location.href = "index.html";
         }, 3000);
         
@@ -320,7 +318,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   function showModal(title, success, message) {
-
     const existingModal = document.querySelector(".modal-overlay");
     if (existingModal) existingModal.remove();
     

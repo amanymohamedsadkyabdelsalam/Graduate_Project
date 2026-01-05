@@ -132,7 +132,7 @@ main {
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 45px;
   animation: slideFade 1s ease;
 }
 
@@ -276,6 +276,139 @@ main {
   align-items: center;
   justify-content: center;
   gap: 8px;
+}
+
+/* Add these styles to the end of style2.css */
+
+/* Responsive styles for signup page */
+@media (max-width: 768px) {
+  header {
+    padding: 10px 20px;
+  }
+  
+  .navigation ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .navigation ul li a {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+  
+  main {
+    padding: 60px 20px;
+    gap: 40px;
+    flex-direction: column;
+  }
+  
+  .half1, .half2 {
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .en {
+    font-size: 32px;
+  }
+  
+  .log-p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-name h2 {
+    font-size: 20px;
+  }
+  
+  .logo-img {
+    font-size: 22px;
+    padding: 6px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .en {
+    font-size: 26px;
+  }
+  
+  .sign-h2 {
+    font-size: 22px;
+  }
+  
+  .half2 {
+    padding: 20px;
+  }
+  
+  .feature {
+    font-size: 14px;
+  }
+  
+  .image-preview-container {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .image-placeholder i {
+    font-size: 30px;
+  }
+  
+  .terms {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .modal-box {
+    padding: 20px;
+    width: 95%;
+  }
+}
+
+/* Fix for circles positioning */
+.purple-circle, .pink-circle {
+  z-index: 0;
+}
+
+.half1, .half2 {
+  position: relative;
+  z-index: 1;
+}
+
+/* Fix for header active state */
+.navigation ul li a.active {
+  background: linear-gradient(45deg, #F6339A, #AD46FF);
+  color: white !important;
+}
+
+/* Animation fix */
+@keyframes slideFade {
+  from { 
+    opacity: 0; 
+    transform: translateY(25px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Ensure main content is visible */
+main {
+  min-height: calc(100vh - 100px);
+  display: flex;
+  align-items: center;
+}
+
+/* Fix for form validation */
+.input-box input:valid {
+  border: 1px solid #45bd62;
+}
+
+.input-box input:invalid:not(:placeholder-shown) {
+  border: 1px solid #ff5757;
 }
 
 @keyframes fadeIn {
