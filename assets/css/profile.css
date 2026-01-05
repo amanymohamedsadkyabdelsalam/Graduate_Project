@@ -150,6 +150,7 @@ body {
 
 #nav a.active {
   color: var(--primary-color-start);
+  background: linear-gradient();
   border-bottom: 3px solid var(--primary-color-start);
 }
 

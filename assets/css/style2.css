@@ -398,7 +398,6 @@ main {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Signup specific styles */
 .active {
   background: linear-gradient(45deg, #F6339A, #AD46FF);
   color: white !important;
@@ -430,7 +429,6 @@ main {
   width: 24px;
 }
 
-/* Password strength */
 .password-strength {
   margin-top: 8px;
   margin-bottom: 20px;
@@ -487,7 +485,6 @@ main {
   content: "✓";
 }
 
-/* Password match indicator */
 .password-match {
   font-size: 12px;
   margin-top: 5px;
@@ -502,7 +499,6 @@ main {
   color: #45bd62;
 }
 
-/* Profile image upload */
 .profile-image-section {
   margin: 20px 0;
 }
@@ -584,7 +580,6 @@ main {
   margin-top: 8px;
 }
 
-/* Terms checkbox */
 .terms {
   display: flex;
   align-items: center;
@@ -611,7 +606,6 @@ main {
   text-decoration: underline;
 }
 
-/* Form validation */
 .input-box input:valid:not(:placeholder-shown) {
   border-color: #45bd62;
 }
@@ -620,7 +614,6 @@ main {
   border-color: #ff5757;
 }
 
-/* Success modal specific */
 .success-animation {
   animation: successPulse 0.5s ease;
 }
@@ -631,7 +624,6 @@ main {
   100% { transform: scale(1); }
 }
 
-/* Make circles visible on signup page */
 .purple-circle {
   background: #ad46ff73;
   top: -40px;
@@ -656,7 +648,6 @@ main {
   opacity: 0.6;
 }
 
-/* Responsive signup */
 @media (max-width: 900px) {
   .half1, .half2 {
     width: 100%;
