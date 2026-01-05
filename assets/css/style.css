@@ -640,6 +640,32 @@ body.dark-mode .comment-actions {
   gap: 10px;
 }
 
+.post-stats {
+  display: flex;
+  gap: 15px;
+  padding: 10px 0;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 15px;
+  font-size: 14px;
+  color: #65676b;
+}
+
+.login-prompt {
+  text-align: center;
+  padding: 15px;
+  color: #65676b;
+}
+
+.login-prompt a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-prompt a:hover {
+  text-decoration: underline;
+}
+
 body.dark-mode .comment-input-wrapper {
   background: #3a3b3c;
 }

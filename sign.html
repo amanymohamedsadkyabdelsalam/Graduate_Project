@@ -18,7 +18,212 @@
     <header>
       <div class="logo">
         <div class="logo-img">
+         <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="assets/css/style2.css">
+    <title>Sign Up - Social Vibe</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-img">
           <i class="fa-regular fa-comment"></i>
+        </div>
+        <div class="logo-name">
+          <h2>SocialVibe</h2>
+        </div>
+      </div>
+
+      <nav class="navigation">
+        <ul>
+          <li>
+            <a href="index.html"><i class="fa-solid fa-house-user"></i> Home</a>
+          </li>
+          <li>
+            <a href="login.html"><i class="fa-solid fa-right-to-bracket"></i> Log In</a>
+          </li>
+          <li>
+            <a href="sign.html" class="active"><i class="fa-solid fa-user-plus"></i> Sign Up</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    
+    <main>
+      <div class="purple-circle"></div>
+      <div class="pink-circle"></div>
+
+      <div class="half1">
+        <div class="logo">
+          <div class="logo-img">
+            <i class="fa-regular fa-comment"></i>
+          </div>
+          <div class="logo-name">
+            <h2 class="logo-h2">SocialVibe</h2>
+          </div>
+        </div>
+        <h1 class="en">Join SocialVibe Today</h1>
+        <p class="log-p">
+          Create an account and start sharing your moments with friends and family
+        </p>
+        <div class="features">
+          <div class="feature">
+            <i class="fa-solid fa-users"></i>
+            <span>Connect with friends</span>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-image"></i>
+            <span>Share photos & videos</span>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-comment"></i>
+            <span>Join the conversation</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="half2">
+        <h2 class="sign-h2">Create new account</h2>
+        <p class="log-p">Fill in the details to get started</p>
+        
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        
+        <form id="signupForm">
+          <label for="full-name" class="log-p">Full Name *</label>
+          <div class="input-box">
+            <input
+              type="text"
+              id="full-name"
+              placeholder="Enter your full name"
+              required
+              minlength="2"
+            />
+            <span class="icon"><i class="fa-regular fa-user"></i></span>
+          </div>
+          
+          <label for="username" class="log-p">Username *</label>
+          <div class="input-box">
+            <input
+              type="text"
+              id="username"
+              placeholder="Choose a username"
+              required
+              minlength="3"
+              pattern="[a-zA-Z0-9_]+"
+              title="Username can only contain letters, numbers, and underscores"
+            />
+            <span class="icon">@</span>
+          </div>
+          
+          <label for="email" class="mail">Email *</label>
+          <div class="input-box">
+            <input
+              type="email"
+              id="email"
+              placeholder="example@email.com"
+              required
+            />
+            <span class="icon"><i class="fa-regular fa-envelope"></i></span>
+          </div>
+          
+          <label for="password" class="log-p">Password *</label>
+          <div class="input-box">
+            <input
+              type="password"
+              id="password"
+              placeholder="••••••••"
+              required
+              minlength="6"
+            />
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+          </div>
+          
+          <div class="password-strength">
+            <div id="strength-bar">
+              <div id="strength-fill"></div>
+            </div>
+            <div id="strength-text"></div>
+            <ul id="password-rules" class="password-rules">
+              <li data-rule="length">At least 8 characters</li>
+              <li data-rule="uppercase">One uppercase letter</li>
+              <li data-rule="number">One number</li>
+              <li data-rule="special">One special character</li>
+            </ul>
+          </div>
+          
+          <label for="confirm-password" class="log-p">Confirm Password *</label>
+          <div class="input-box">
+            <input
+              type="password"
+              id="confirm-password"
+              placeholder="••••••••"
+              required
+            />
+            <span class="icon"><i class="fa-solid fa-lock"></i></span>
+          </div>
+          <div id="password-match" class="password-match"></div>
+          
+          <div class="profile-image-section">
+            <label for="profile-Image" class="imag">Profile Image (Optional)</label>
+            <div class="image-upload">
+              <div class="image-preview-container">
+                <img id="profile-preview" src="" alt="Profile preview">
+                <div class="image-placeholder">
+                  <i class="fa-solid fa-user-circle"></i>
+                  <span>No image selected</span>
+                </div>
+              </div>
+              <div class="file-input-wrapper">
+                <input
+                  type="file"
+                  id="profile-Image"
+                  accept="image/*"
+                  class="file-input"
+                />
+                <label for="profile-Image" class="file-input-label">
+                  <i class="fa-solid fa-cloud-upload-alt"></i>
+                  Choose Image
+                </label>
+                <div class="file-info"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="terms">
+            <input type="checkbox" id="terms" required>
+            <label for="terms" class="log-p">
+              I agree to the <a href="#" class="terms-link">Terms of Service</a> and <a href="#" class="terms-link">Privacy Policy</a>
+            </label>
+          </div>
+          
+          <button type="submit" id="signUp">
+            <span id="signup-text">Create Account</span>
+            <span id="signup-loader" style="display: none;">
+              <i class="fas fa-spinner fa-spin"></i> Creating Account...
+            </span>
+          </button>
+          
+          <p class="log-p">
+            Already have an account? <a href="login.html" class="signup-link">Login</a>
+          </p>
+        </form>
+      </div>
+    </main>
+    
+    <div id="modal-container"></div>
+    
+    <script src="assets/js/script-register.js"></script>
+  </body>
+</html> <i class="fa-regular fa-comment"></i>
         </div>
         <div class="logo-name">
           <h2>SocialVibe</h2>
