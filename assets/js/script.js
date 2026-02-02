@@ -14,6 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let isLoading = false;
   let hasMorePosts = true;
   let currentPage = 0;
+  let activePostMenu = null;
+  let postToDelete = null;
 
   init();
 
@@ -83,6 +85,27 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     window.addEventListener("scroll", handleScroll);
+
+    // Close post menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (activePostMenu && !e.target.closest(".post-menu-container")) {
+        activePostMenu.classList.remove("show");
+        activePostMenu = null;
+      }
+    });
+
+    // Close modals when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        e.target.classList.contains("delete-modal-overlay") ||
+        e.target.classList.contains("share-modal-overlay") ||
+        e.target.classList.contains("edit-modal-overlay")
+      ) {
+        closeDeleteModal();
+        closeShareModal();
+        closeEditModal();
+      }
+    });
   }
 
   function setupNavigation() {
@@ -221,13 +244,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const comments = post.comments || [];
 
     const postDate = new Date(post.created_at);
-    const formattedDate = postDate.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
+    let displayDate;
+
+    // تحقق من أن currentUser موجود ومقارنة IDs
+    const isCurrentUserAuthor =
+      currentUser &&
+      currentUser.id &&
+      post.author &&
+      post.author.id &&
+      parseInt(currentUser.id) === parseInt(post.author.id);
+
+    if (currentUser && !isCurrentUserAuthor) {
+      displayDate = postDate.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } else {
+      displayDate = getRelativeTime(postDate);
+    }
 
     let commentsHTML = "";
     if (comments.length > 0) {
@@ -266,8 +303,50 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="post-author-info">
           <h3>${post.author.name}</h3>
           <p>@${post.author.username}</p>
-          <p>${formattedDate}</p>
+          <p>${displayDate}</p>
         </div>
+        
+        ${
+          isCurrentUserAuthor
+            ? `
+          <div class="post-menu-container">
+            <button class="post-menu-btn" onclick="togglePostMenu(${post.id}, event)">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="post-menu-dropdown" id="post-menu-${post.id}">
+              <div class="post-menu-item edit" onclick="editPost(${post.id})">
+                <i class="fas fa-edit"></i>
+                <span>Edit</span>
+              </div>
+              <div class="post-menu-item share" onclick="sharePost(${post.id})">
+                <i class="fas fa-share-alt"></i>
+                <span>Share</span>
+              </div>
+              <div class="post-menu-item delete" onclick="showDeleteModal(${post.id})">
+                <i class="fas fa-trash"></i>
+                <span>Delete</span>
+              </div>
+            </div>
+          </div>
+        `
+            : `
+          <div class="post-menu-container">
+            <button class="post-menu-btn" onclick="togglePostMenu(${post.id}, event)">
+              <i class="fas fa-ellipsis-v"></i>
+            </button>
+            <div class="post-menu-dropdown" id="post-menu-${post.id}">
+              <div class="post-menu-item share" onclick="sharePost(${post.id})">
+                <i class="fas fa-share-alt"></i>
+                <span>Share</span>
+              </div>
+              <div class="post-menu-item" onclick="reportPost(${post.id})">
+                <i class="fas fa-flag"></i>
+                <span>Report</span>
+              </div>
+            </div>
+          </div>
+        `
+        }
       </div>
       
       <div class="post-content">
@@ -344,6 +423,39 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     return div;
+  }
+
+  function getRelativeTime(date) {
+    const now = new Date();
+    const diffMs = now - date;
+
+    if (isNaN(diffMs) || diffMs < 0) {
+      return "Recently";
+    }
+
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+    const diffWeek = Math.floor(diffDay / 7);
+    const diffMonth = Math.floor(diffDay / 30);
+    const diffYear = Math.floor(diffDay / 365);
+
+    if (diffSec < 60) {
+      return "Just now";
+    } else if (diffMin < 60) {
+      return `${diffMin} minute${diffMin !== 1 ? "s" : ""} ago`;
+    } else if (diffHour < 24) {
+      return `${diffHour} hour${diffHour !== 1 ? "s" : ""} ago`;
+    } else if (diffDay < 7) {
+      return `${diffDay} day${diffDay !== 1 ? "s" : ""} ago`;
+    } else if (diffWeek < 4) {
+      return `${diffWeek} week${diffWeek !== 1 ? "s" : ""} ago`;
+    } else if (diffMonth < 12) {
+      return `${diffMonth} month${diffMonth !== 1 ? "s" : ""} ago`;
+    } else {
+      return `${diffYear} year${diffYear !== 1 ? "s" : ""} ago`;
+    }
   }
 
   function handleScroll() {
@@ -594,6 +706,331 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchPosts();
   }
 
+  // Post Menu Functions
+  function togglePostMenu(postId, event) {
+    event.stopPropagation();
+
+    const menu = document.getElementById(`post-menu-${postId}`);
+
+    // Close other open menus
+    if (activePostMenu && activePostMenu !== menu) {
+      activePostMenu.classList.remove("show");
+    }
+
+    // Toggle current menu
+    menu.classList.toggle("show");
+    activePostMenu = menu.classList.contains("show") ? menu : null;
+  }
+
+  async function editPost(postId) {
+    if (!currentUser) {
+      showToast("Please login to edit posts");
+      return;
+    }
+
+    try {
+      // Get post data
+      const response = await fetch(
+        `https://tarmeezacademy.com/api/v1/posts/${postId}`
+      );
+      const result = await response.json();
+
+      if (result.data) {
+        const post = result.data;
+
+        // Create edit modal
+        const modal = document.createElement("div");
+        modal.className = "edit-modal-overlay show";
+        modal.innerHTML = `
+          <div class="edit-modal">
+            <button class="close-modal-btn" onclick="closeEditModal()">
+              <i class="fas fa-times"></i>
+            </button>
+            <h3>Edit Post</h3>
+            <form id="editPostForm-${postId}">
+              <div class="form-group">
+                <label for="edit-title-${postId}">Title (Optional)</label>
+                <input type="text" id="edit-title-${postId}" value="${
+          post.title || ""
+        }" placeholder="Enter post title">
+              </div>
+              <div class="form-group">
+                <label for="edit-body-${postId}">Content *</label>
+                <textarea id="edit-body-${postId}" rows="4" required placeholder="What's on your mind?">${
+          post.body
+        }</textarea>
+              </div>
+              <div class="image-preview" id="edit-image-preview-${postId}">
+                ${
+                  post.image
+                    ? `<img src="${post.image}" alt="Current image" loading="lazy">`
+                    : ""
+                }
+              </div>
+              <div class="form-group">
+                <label for="edit-image-${postId}">Change Image (Optional)</label>
+                <input type="file" id="edit-image-${postId}" accept="image/*">
+              </div>
+              <div class="modal-actions">
+                <button type="button" class="cancel-btn" onclick="closeEditModal()">Cancel</button>
+                <button type="submit" class="save-btn">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        // Handle form submission
+        document
+          .getElementById(`editPostForm-${postId}`)
+          .addEventListener("submit", async (e) => {
+            e.preventDefault();
+            await updatePost(postId);
+          });
+
+        // Handle image preview
+        document
+          .getElementById(`edit-image-${postId}`)
+          .addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                const preview = document.getElementById(
+                  `edit-image-preview-${postId}`
+                );
+                preview.innerHTML = `<img src="${e.target.result}" alt="New image">`;
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+      }
+    } catch (error) {
+      console.error("Error loading post for edit:", error);
+      showToast("Failed to load post for editing");
+    }
+  }
+
+  async function updatePost(postId) {
+    const title = document.getElementById(`edit-title-${postId}`).value.trim();
+    const body = document.getElementById(`edit-body-${postId}`).value.trim();
+    const imageInput = document.getElementById(`edit-image-${postId}`);
+
+    if (!body) {
+      showToast("Please enter some content");
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("body", body);
+
+      if (imageInput.files[0]) {
+        formData.append("image", imageInput.files[0]);
+      }
+
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `https://tarmeezacademy.com/api/v1/posts/${postId}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+
+      const result = await response.json();
+
+      if (response.ok) {
+        showToast("Post updated successfully!");
+        closeEditModal();
+
+        // Refresh the page to show updated post
+        location.reload();
+      } else {
+        showToast(result.message || "Failed to update post");
+      }
+    } catch (error) {
+      console.error("Error updating post:", error);
+      showToast("Failed to update post");
+    }
+  }
+
+  function closeEditModal() {
+    const modal = document.querySelector(".edit-modal-overlay");
+    if (modal) {
+      modal.remove();
+    }
+  }
+
+  function showDeleteModal(postId) {
+    postToDelete = postId;
+    const modal = document.createElement("div");
+    modal.className = "delete-modal-overlay show";
+    modal.innerHTML = `
+      <div class="delete-modal">
+        <h3>Delete Post</h3>
+        <p>Are you sure you want to delete this post? This action cannot be undone.</p>
+        <div class="delete-modal-actions">
+          <button class="delete-cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+          <button class="delete-confirm-btn" onclick="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  function closeDeleteModal() {
+    const modal = document.querySelector(".delete-modal-overlay");
+    if (modal) {
+      modal.remove();
+    }
+    postToDelete = null;
+  }
+
+  async function confirmDelete() {
+    if (!postToDelete) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `https://tarmeezacademy.com/api/v1/posts/${postToDelete}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        showToast("Post deleted successfully!");
+
+        // Remove post from DOM
+        const postElement = document.getElementById(`post-${postToDelete}`);
+        if (postElement) {
+          postElement.remove();
+        }
+
+        closeDeleteModal();
+      } else {
+        const result = await response.json();
+        showToast(result.message || "Failed to delete post");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      showToast("Failed to delete post");
+    }
+  }
+
+  function sharePost(postId) {
+    const postUrl = `${window.location.origin}/post.html?id=${postId}`;
+    const modal = document.createElement("div");
+    modal.className = "share-modal-overlay show";
+    modal.innerHTML = `
+      <div class="share-modal">
+        <button class="close-modal-btn" onclick="closeShareModal()">
+          <i class="fas fa-times"></i>
+        </button>
+        <h3>Share Post</h3>
+        <div class="share-options">
+          <div class="share-option facebook" onclick="shareToFacebook(${postId})">
+            <i class="fab fa-facebook"></i>
+            <span>Facebook</span>
+          </div>
+          <div class="share-option twitter" onclick="shareToTwitter(${postId})">
+            <i class="fab fa-twitter"></i>
+            <span>Twitter</span>
+          </div>
+          <div class="share-option whatsapp" onclick="shareToWhatsApp(${postId})">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp</span>
+          </div>
+          <div class="share-option copy" onclick="copyPostLink(${postId})">
+            <i class="fas fa-copy"></i>
+            <span>Copy Link</span>
+          </div>
+        </div>
+        <div class="share-url-container">
+          <label>Post URL:</label>
+          <div class="share-url">
+            <input type="text" value="${postUrl}" readonly id="share-url-${postId}">
+            <button onclick="copyPostLink(${postId})">Copy</button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  function closeShareModal() {
+    const modal = document.querySelector(".share-modal-overlay");
+    if (modal) {
+      modal.remove();
+    }
+  }
+
+  function shareToFacebook(postId) {
+    const url = encodeURIComponent(
+      `${window.location.origin}/post.html?id=${postId}`
+    );
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${url}`,
+      "_blank"
+    );
+    closeShareModal();
+  }
+
+  function shareToTwitter(postId) {
+    const url = encodeURIComponent(
+      `${window.location.origin}/post.html?id=${postId}`
+    );
+    const text = encodeURIComponent("Check out this post on SocialVibe!");
+    window.open(
+      `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
+      "_blank"
+    );
+    closeShareModal();
+  }
+
+  function shareToWhatsApp(postId) {
+    const url = encodeURIComponent(
+      `${window.location.origin}/post.html?id=${postId}`
+    );
+    const text = encodeURIComponent("Check out this post on SocialVibe!");
+    window.open(`https://wa.me/?text=${text}%20${url}`, "_blank");
+    closeShareModal();
+  }
+
+  function copyPostLink(postId) {
+    const url = `${window.location.origin}/post.html?id=${postId}`;
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        showToast("Link copied to clipboard!");
+        closeShareModal();
+      })
+      .catch(() => {
+        // Fallback for older browsers
+        const input = document.getElementById(`share-url-${postId}`);
+        if (input) {
+          input.select();
+          document.execCommand("copy");
+          showToast("Link copied to clipboard!");
+          closeShareModal();
+        }
+      });
+  }
+
+  function reportPost(postId) {
+    showToast("Thank you for reporting this post. Our team will review it.");
+  }
+
+  // Export functions to window object
   window.toggleLike = toggleLike;
   window.addComment = addComment;
   window.toggleComments = toggleComments;
@@ -607,4 +1044,17 @@ document.addEventListener("DOMContentLoaded", () => {
   window.logout = logout;
   window.openUserProfile = openUserProfile;
   window.openMyProfile = openMyProfile;
+  window.togglePostMenu = togglePostMenu;
+  window.editPost = editPost;
+  window.sharePost = sharePost;
+  window.showDeleteModal = showDeleteModal;
+  window.closeDeleteModal = closeDeleteModal;
+  window.confirmDelete = confirmDelete;
+  window.closeShareModal = closeShareModal;
+  window.shareToFacebook = shareToFacebook;
+  window.shareToTwitter = shareToTwitter;
+  window.shareToWhatsApp = shareToWhatsApp;
+  window.copyPostLink = copyPostLink;
+  window.reportPost = reportPost;
+  window.closeEditModal = closeEditModal;
 });
